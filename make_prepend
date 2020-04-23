@@ -1,0 +1,11 @@
+find . -type f -name 'link.txt' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name '*.cmake' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name '*.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name 'flags.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
+find . -type f -name 'link.txt' -exec sed -i 's/\-fPIE/ /g' {} \;
+find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIE/ /g' {} \;
+find . -type f -name '*.cmake' -exec sed -i 's/\-fPIE/ /g' {} \;
+find . -type f -name '*.make' -exec sed -i 's/\-fPIE/ /g' {} \;
+find . -type f -name 'flags.make' -exec sed -i 's/\-fPIE/ /g' {} \;
+find . -type f -name 'Makefile' -exec sed -i 's/cmake_check_build_system/ /g' {} \;

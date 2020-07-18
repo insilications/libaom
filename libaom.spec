@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : libaom
-Version  : 1
-Release  : 5
-URL      : https://aomedia.googlesource.com/aom/+archive/refs/heads/master.tar.gz
-Source0  : https://aomedia.googlesource.com/aom/+archive/refs/heads/master.tar.gz
+Version  : 2.0.0
+Release  : 1
+URL      : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.0.zip
+Source0  : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.0.zip
 Summary  : GoogleTest (with main() function)
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -20,8 +20,12 @@ BuildRequires : nasm
 BuildRequires : nasm-bin
 BuildRequires : perl
 BuildRequires : python3
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 
 %description
+=========
 # AV1 Codec Library
 ## Contents
 1. [Building the lib and applications](#building-the-library-and-applications)
@@ -101,8 +105,8 @@ staticdev components for the libaom package.
 
 
 %prep
-%setup -q -c -n master.tar
-cd %{_builddir}/master.tar
+%setup -q -n libaom-v2.0.0
+cd %{_builddir}/libaom-v2.0.0
 
 %build
 ## build_prepend content
@@ -112,18 +116,12 @@ find . -type f -name 'CMakeLists' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 find . -type f -name '*.cmake' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 find . -type f -name '*.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 find . -type f -name 'flags.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-find . -type f -name 'link.txt' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name 'CMakeLists' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name '*.cmake' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name '*.make' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name 'flags.make' -exec sed -i 's/\-fPIE/ /g' {} \;
 ## build_prepend end
 unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1587633690
+export SOURCE_DATE_EPOCH=1595037321
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -131,34 +129,35 @@ export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 ## altflags1 content
-export CFLAGS="-O3 -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-sort-common -Wl,-z,now -Wl,-z,relro -Wno-error -Wp,-D_REENTRANT -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -feliminate-unused-debug-types -ffat-lto-objects -fipa-pta -floop-nest-optimize -flto=12 -fno-PIC -fno-PIE -fno-math-errno -fno-pie -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -fpic -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -g -m64 -malign-data=cacheline -march=native -mtls-dialect=gnu2 -mtune=native -pipe"
-export FCFLAGS="-O3 -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-sort-common -Wl,-z,now -Wl,-z,relro -Wno-error -Wp,-D_REENTRANT -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -feliminate-unused-debug-types -ffat-lto-objects -fipa-pta -floop-nest-optimize -flto=12 -fno-PIC -fno-PIE -fno-math-errno -fno-pie -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -fpic -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -g -m64 -malign-data=cacheline -march=native -mtls-dialect=gnu2 -mtune=native -pipe"
-export FFLAGS="-O3 -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-sort-common -Wl,-z,now -Wl,-z,relro -Wno-error -Wp,-D_REENTRANT -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -feliminate-unused-debug-types -ffat-lto-objects -fipa-pta -floop-nest-optimize -flto=12 -fno-PIC -fno-PIE -fno-math-errno -fno-pie -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -fpic -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -g -m64 -malign-data=cacheline -march=native -mtls-dialect=gnu2 -mtune=native -pipe"
-export CFFLAGS="-O3 -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-sort-common -Wl,-z,now -Wl,-z,relro -Wno-error -Wp,-D_REENTRANT -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -feliminate-unused-debug-types -ffat-lto-objects -fipa-pta -floop-nest-optimize -flto=12 -fno-PIC -fno-PIE -fno-math-errno -fno-pie -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -fpic -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -g -m64 -malign-data=cacheline -march=native -mtls-dialect=gnu2 -mtune=native -pipe"
-export LDFLAGS="-O3 -Wl,--build-id=sha1 -Wl,--hash-style=gnu -Wl,-O2 -Wl,-sort-common -Wl,-z,now -Wl,-z,relro -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -ffat-lto-objects -fipa-pta -floop-nest-optimize -flto=12 -fno-semantic-interposition -fno-stack-protector -fpic -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -march=native -mtls-dialect=gnu2 -mtune=native"
-export CXXFLAGS="-O3 -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-sort-common -Wl,-z,now -Wl,-z,relro -Wno-error -Wp,-D_REENTRANT -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -feliminate-unused-debug-types -ffat-lto-objects -fipa-pta -floop-nest-optimize -flto=12 -fno-PIC -fno-PIE -fno-math-errno -fno-pie -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -fpic -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -fvisibility-inlines-hidden -g -m64 -malign-data=cacheline -march=native -mtls-dialect=gnu2 -mtune=native -pipe"
-unset LD_AS_NEEDED
-export CCACHE_DISABLE=1
+export CFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -fno-common -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe"
+# -ffat-lto-objects -fno-PIE -fno-PIE -m64 -no-pie -fpic -fvisibility=hidden
+# gcc: -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-common -Wno-error -Wp,-D_REENTRANT
+export CXXFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -fno-common -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -fvisibility-inlines-hidden -pipe"
+#
+export FCFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -fno-common -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe"
+export FFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -fno-common -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe"
+export CFFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -fno-common -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe"
+#
+export LDFLAGS="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -fno-common -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe"
+#
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+#export CCACHE_DISABLE=1
 ## altflags1 end
-%cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=OFF -DCMAKE_C_FLAGS_RELWITHDEBINFO="-O3 -g" -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-O3 -g" -DCMAKE_C_FLAGS_RELEASE="-O3 -g" -DCMAKE_CXX_FLAGS_RELEASE="-O3 -g" -DENABLE_SHARED:bool=ON -DCMAKE_BUILD_TYPE=Release -DCONFIG_AV1_ENCODER=1 -DENABLE_DOCS=0 -DENABLE_TESTS=0 -DENABLE_NASM=1 -DENABLE_NASM=ON -DCMAKE_INSTALL_LIBDIR=lib64
+%cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_C_FLAGS_RELWITHDEBINFO="-O3 -g" -DCMAKE_CXX_FLAGS_RELWITHDEBINFO="-O3 -g" -DCMAKE_C_FLAGS_RELEASE="-O3 -g" -DCMAKE_CXX_FLAGS_RELEASE="-O3 -g" -DENABLE_SHARED:bool=ON -DCMAKE_BUILD_TYPE=Release -DCONFIG_AV1_ENCODER=1 -DENABLE_DOCS=0 -DENABLE_TESTS=1 -DENABLE_NASM=1 -DENABLE_NASM=ON -DCMAKE_INSTALL_LIBDIR=lib64 -DBUILD_SHARED_LIBS=1
 ## make_prepend content
 find . -type f -name 'link.txt' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 find . -type f -name '*.cmake' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 find . -type f -name '*.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 find . -type f -name 'flags.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-find . -type f -name 'link.txt' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name '*.cmake' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name '*.make' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name 'flags.make' -exec sed -i 's/\-fPIE/ /g' {} \;
-find . -type f -name 'Makefile' -exec sed -i 's/cmake_check_build_system/ /g' {} \;
 ## make_prepend end
-make  %{?_smp_mflags}  VERBOSE=1
+make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1587633690
+export SOURCE_DATE_EPOCH=1595037321
 rm -rf %{buildroot}
 pushd clr-build
 %make_install
@@ -188,8 +187,8 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libaom.so
-/usr/lib64/libaom.so.0
-/usr/lib64/libaom.so.1.0.0
+/usr/lib64/libaom.so.2
+/usr/lib64/libaom.so.2.0.0
 
 %files staticdev
 %defattr(-,root,root,-)

@@ -1,5 +1,5 @@
 PKG_NAME := libaom
-URL = https://aomedia.googlesource.com/aom/+archive/refs/heads/master.tar.gz
+URL = https://aomedia.googlesource.com/aom
 ARCHIVES = 
 
 include ../common/Makefile.common

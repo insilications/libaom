@@ -1,0 +1,30 @@
+From cd4b7ad856b7bc6c980653cbf08d4d6d9e0ac854 Mon Sep 17 00:00:00 2001
+From: insilications <boboniboni@gmail.com>
+Date: Mon, 27 Jul 2020 16:25:17 -0300
+Subject: [PATCH 2/2] Fix tools_common.sh
+
+---
+ test/tools_common.sh | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/test/tools_common.sh b/test/tools_common.sh
+index d40709b38..97f23eb1b 100755
+--- a/test/tools_common.sh
++++ b/test/tools_common.sh
+@@ -89,12 +89,7 @@ cmake_version() {
+ # Echoes current git version as reported by running 'git describe', or the
+ # version used by the cmake build when git is unavailable.
+ source_version() {
+-  if git --version > /dev/null 2>&1; then
+-    (cd "$(dirname "${0}")"
+-    git describe)
+-  else
+-    cmake_version
+-  fi
++  cmake_version
+ }
+ 
+ # Echoes warnings to stdout when source version and CMake build generated
+-- 
+2.27.0
+

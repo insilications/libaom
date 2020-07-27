@@ -1,2 +1,5 @@
-LIBAOM_TEST_DATA_PATH=../aom-testdata-clr make -j5 runtests
-../test/examples.sh --bin-path examples
+#LIBAOM_TEST_DATA_PATH=../aom-testdata-clr make -j5 runtests
+LIBAOM_TEST_DATA_PATH=../aom-testdata-clr ../test/examples.sh --bin-path examples --verbose || :
+pushd ../aom-testdata-clr
+PATH="../test:../clr-build:$PATH" run_encodes.sh 1000 1000 50 baseline || :
+popd

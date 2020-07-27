@@ -1,0 +1,67 @@
+From 7162cddfcbde605132c91b38fd38d208c30cd2f3 Mon Sep 17 00:00:00 2001
+From: insilications <boboniboni@gmail.com>
+Date: Mon, 27 Jul 2020 16:08:37 -0300
+Subject: [PATCH 1/2] Fix best_encode.sh
+
+---
+ test/best_encode.sh | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
+
+diff --git a/test/best_encode.sh b/test/best_encode.sh
+index fe31a01cb..2e237632d 100755
+--- a/test/best_encode.sh
++++ b/test/best_encode.sh
+@@ -29,8 +29,8 @@ if [[ -e $f.fpf ]]; then
+     -p 2 \
+     --pass=2 \
+     --fpf=$f.fpf \
+-    --best \
+-    --cpu-used=0 \
++    --good \
++    --cpu-used=5 \
+     --target-bitrate=$b \
+     --auto-alt-ref=1 \
+     -v \
+@@ -48,8 +48,7 @@ if [[ -e $f.fpf ]]; then
+     --maxsection-pct=800 \
+     --psnr \
+     --arnr-maxframes=7 \
+-    --arnr-strength=3 \
+-    --arnr-type=3
++    --arnr-strength=3
+ else
+   # No first-pass file found, do 2-pass encode
+   aomenc \
+@@ -58,8 +57,8 @@ else
+     -p 2 \
+     --pass=1 \
+     --fpf=$f.fpf \
+-    --best \
+-    --cpu-used=0 \
++    --good \
++    --cpu-used=5 \
+     --target-bitrate=$b \
+     --auto-alt-ref=1 \
+     -v \
+@@ -79,8 +78,8 @@ else
+     -p 2 \
+     --pass=2 \
+     --fpf=$f.fpf \
+-    --best \
+-    --cpu-used=0 \
++    --good \
++    --cpu-used=5 \
+     --target-bitrate=$b \
+     --auto-alt-ref=1 \
+     -v \
+@@ -98,6 +97,5 @@ else
+     --maxsection-pct=800 \
+     --psnr \
+     --arnr-maxframes=7 \
+-    --arnr-strength=3 \
+-    --arnr-type=3
++    --arnr-strength=3
+ fi
+-- 
+2.27.0
+

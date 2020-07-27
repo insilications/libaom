@@ -1,0 +1,2 @@
+LIBAOM_TEST_DATA_PATH=../aom-testdata-clr make -j5 runtests
+../test/examples.sh --bin-path examples

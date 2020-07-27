@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : libaom
 Version  : 2.0.0
-Release  : 2
+Release  : 3
 URL      : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.0.zip
 Source0  : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.0.zip
 Source1  : file:///insilications/build/clearlinux/packages/libaom/aom-testdata-clr-20.07.27.zip
@@ -119,19 +119,11 @@ cp -r %{_builddir}/aom-testdata-clr-20.07.27/* %{_builddir}/libaom-v2.0.0/aom-te
 %patch2 -p1
 
 %build
-## build_prepend content
-#find . -type f -name 'link.txt' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name 'CMakeLists' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name '*.cmake' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name '*.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-#find . -type f -name 'flags.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
-## build_prepend end
 unset http_proxy
 unset https_proxy
 unset no_proxy
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1595878515
+export SOURCE_DATE_EPOCH=1595882470
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -141,11 +133,11 @@ export NM=gcc-nm
 ## altflags_pgo content
 ## pgo generate
 export PGO_GEN="-fprofile-generate=/var/tmp/pgo -fprofile-dir=/var/tmp/pgo -fprofile-abs-path -fprofile-update=atomic -fprofile-arcs -ftest-coverage --coverage -fprofile-partial-training"
-export CFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe $PGO_GEN"
-export FCFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe $PGO_GEN"
-export FFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe $PGO_GEN"
-export CXXFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -fvisibility-inlines-hidden -pipe $PGO_GEN"
-export LDFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe $PGO_GEN"
+export CFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -flto=16 $PGO_GEN"
+export FCFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -flto=16 $PGO_GEN"
+export FFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -flto=16 $PGO_GEN"
+export CXXFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -fvisibility-inlines-hidden -pipe -flto=16 $PGO_GEN"
+export LDFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -flto=16 $PGO_GEN"
 ## pgo use
 ## -ffat-lto-objects -fno-PIE -fno-PIE -m64 -no-pie -fpic -fvisibility=hidden
 ## gcc: -feliminate-unused-debug-types -fipa-pta -flto=16 -Wno-error -Wp,-D_REENTRANT -fno-common
@@ -160,12 +152,12 @@ export RANLIB=gcc-ranlib
 export NM=gcc-nm
 #export CCACHE_DISABLE=1
 ## altflags_pgo end
-%cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DENABLE_SHARED:bool=ON -DCMAKE_BUILD_TYPE=Release -DCONFIG_AV1_ENCODER=1 -DENABLE_DOCS=0 -DENABLE_TESTS=1 -DENABLE_EXAMPLES=1 -DENABLE_NASM=1 -DENABLE_NASM=ON -DCMAKE_INSTALL_LIBDIR=lib64 -DBUILD_SHARED_LIBS=1
 export CFLAGS="${CFLAGS_GENERATE}"
 export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
 export FCFLAGS="${FCFLAGS_GENERATE}"
 export LDFLAGS="${LDFLAGS_GENERATE}"
+%cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DENABLE_SHARED:bool=ON -DCMAKE_BUILD_TYPE=Release -DCONFIG_AV1_ENCODER=1 -DENABLE_DOCS=0 -DENABLE_TESTS=1 -DENABLE_EXAMPLES=1 -DENABLE_NASM=1 -DENABLE_NASM=ON -DCMAKE_INSTALL_LIBDIR=lib64 -DBUILD_SHARED_LIBS=1
 ## make_prepend content
 #find . -type f -name 'link.txt' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 #find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
@@ -173,19 +165,20 @@ export LDFLAGS="${LDFLAGS_GENERATE}"
 #find . -type f -name '*.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 #find . -type f -name 'flags.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 ## make_prepend end
-make  %{?_smp_mflags}
+make  %{?_smp_mflags}  V=1 VERBOSE=1
 
 #LIBAOM_TEST_DATA_PATH=../aom-testdata-clr make -j5 runtests
 LIBAOM_TEST_DATA_PATH=../aom-testdata-clr ../test/examples.sh --bin-path examples --verbose || :
 pushd ../aom-testdata-clr
-PATH="../test:.:$PATH" run_encodes.sh 1000 1000 50 baseline || :
+PATH="../test:../clr-build:$PATH" run_encodes.sh 150 150 150 baseline || :
 popd
-make clean
+find . -type f -not -name '*.gcno' -delete -print
 export CFLAGS="${CFLAGS_USE}"
 export CXXFLAGS="${CXXFLAGS_USE}"
 export FFLAGS="${FFLAGS_USE}"
 export FCFLAGS="${FCFLAGS_USE}"
 export LDFLAGS="${LDFLAGS_USE}"
+%cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DENABLE_SHARED:bool=ON -DCMAKE_BUILD_TYPE=Release -DCONFIG_AV1_ENCODER=1 -DENABLE_DOCS=0 -DENABLE_TESTS=1 -DENABLE_EXAMPLES=1 -DENABLE_NASM=1 -DENABLE_NASM=ON -DCMAKE_INSTALL_LIBDIR=lib64 -DBUILD_SHARED_LIBS=1
 ## make_prepend content
 #find . -type f -name 'link.txt' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 #find . -type f -name 'cmake_link_script' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
@@ -193,11 +186,11 @@ export LDFLAGS="${LDFLAGS_USE}"
 #find . -type f -name '*.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 #find . -type f -name 'flags.make' -exec sed -i 's/\-fPIC/\-fpic/g' {} \;
 ## make_prepend end
-make  %{?_smp_mflags}
+make  %{?_smp_mflags}  V=1 VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1595878515
+export SOURCE_DATE_EPOCH=1595882470
 rm -rf %{buildroot}
 pushd clr-build
 %make_install

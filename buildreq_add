@@ -4,3 +4,4 @@ nasm
 nasm-bin
 git
 findutils
+ccache

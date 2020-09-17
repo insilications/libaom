@@ -4,11 +4,11 @@
 #
 %define keepstatic 1
 Name     : libaom
-Version  : 2.0.0
-Release  : 3
-URL      : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.0.tar.gz
-Source0  : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.0.tar.gz
-Source1  : file:///insilications/build/clearlinux/packages/libaom/aom-testdata-clr-20.07.27.tar.gz
+Version  : 2.0
+Release  : 4
+URL      : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.tar.gz
+Source0  : file:///insilications/build/clearlinux/packages/libaom/libaom-v2.0.tar.gz
+Source1  : file:///insilications/build/clearlinux/packages/libaom/aom-testdata-clr-.tar.gz
 Summary  : GoogleTest (with main() function)
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -103,7 +103,7 @@ staticdev components for the libaom package.
 %prep
 %setup -q -n libaom
 cd %{_builddir}
-tar xf %{_sourcedir}/aom-testdata-clr-20.07.27.tar.gz
+tar xf %{_sourcedir}/aom-testdata-clr-.tar.gz
 cd %{_builddir}/libaom
 mkdir -p aom-testdata-clr/
 cp -r %{_builddir}/aom-testdata-clr/* %{_builddir}/libaom/aom-testdata-clr/
@@ -116,7 +116,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1599719066
+export SOURCE_DATE_EPOCH=1600338207
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -165,7 +165,7 @@ make  %{?_smp_mflags}  V=1 VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1599719066
+export SOURCE_DATE_EPOCH=1600338207
 rm -rf %{buildroot}
 pushd clr-build
 %make_install
